@@ -1,0 +1,26 @@
+{% extends 'app/base.html' %}
+
+{% block calendar %}
+<div class="container">
+    <h2>Chọn Ngày</h2>
+    <div class="form-group">
+        <label for="datePickerInput">Chọn Ngày:</label>
+        <input type="text" id="datePickerInput" class="form-control">
+    </div>
+    {% comment %} <button class="btn btn-primary" onclick="showDatepicker()">Hiện Lịch</button> {% endcomment %}
+</div>
+
+<script>
+    $(document).ready(function() {
+        // Khởi tạo Datepicker nhưng ẩn nó đi ban đầu
+        $('#datePickerInput').datepicker({
+            format: 'dd-mm-yyyy',
+            autoclose: true
+        });
+    });
+
+    function showDatepicker() {
+        $('#datePickerInput').datepicker('show'); // Hiển thị lịch khi bấm nút
+    }
+</script>
+{% endblock calendar %}

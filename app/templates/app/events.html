@@ -1,0 +1,132 @@
+{% extends 'app/base.html' %}
+
+{% block events %}
+<div class="container">
+    <h2>Chọn Ngày và Nhắc Nhở</h2>
+
+    <div class="form-group">
+        <label for="datePickerInput">Chọn Ngày:</label>
+        <input type="text" id="datePickerInput" class="form-control">
+    </div>
+    {% comment %} <button class="btn btn-primary" onclick="showDatepicker()">Hiện Lịch</button> {% endcomment %}
+
+    <form id="reminderForm">
+        {% csrf_token %}
+        {{ form.date }}  <!-- Trường date ẩn -->
+        <div class="form-group">
+            <label for="reminderInput">Nhắc Nhở:</label>
+            <input type="text" id="reminderInput" name="reminder" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-success">Lưu Nhắc Nhở</button>
+    </form>
+
+    <h3>Nhắc Nhở Đã Lưu:</h3>
+    <ul id="reminderList">
+        {% for reminder in reminders %}
+            <li>{{ reminder.date }}: {{ reminder.reminder }}</li>
+        {% empty %}
+            <li class="task list">Không có nhắc nhở nào được lưu.</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<style>
+    .container {
+        margin-top: 20px;
+    }
+
+    h2 {
+        color: #007bff;
+    }
+
+    .form-group label {
+        font-weight: bold;
+    }
+
+    h3 {
+        margin-top: 20px;
+    }
+
+    #datePickerInput {
+        width: 300px;  /* Chiều rộng cho input date */
+        height: 40px;  /* Chiều cao cho input date */
+    }
+
+    input[name="reminder"] {
+        width: 500px;  /* Chiều rộng cho input reminder */
+        height: 50px;  /* Chiều cao cho input reminder */
+    }
+
+    .btn-primary {
+        margin-bottom: 10px;
+    }
+
+    .btn-success {
+        margin-top: 10px;
+    }
+</style>
+
+
+<script>
+    $(document).ready(function() {
+        $('#datePickerInput').datepicker({
+            format: 'dd-mm-yyyy',
+            autoclose: true
+        });
+    });
+
+    function showDatepicker() {
+        $('#datePickerInput').datepicker('show'); // Hiển thị lịch khi bấm nút
+    }
+
+    document.getElementById('reminderForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Ngăn chặn form reload trang
+
+        const reminderValue = document.getElementById('reminderInput').value;
+        const datePickerValue = document.getElementById('datePickerInput').value;
+        
+        if (reminderValue.trim() !== "" && datePickerValue.trim() !== "") {
+            const newReminder = document.createElement('li');
+            newReminder.textContent = datePickerValue + " - " + reminderValue;
+            newReminder.setAttribute('data-date', convertToDate(datePickerValue).toISOString());
+
+            const reminderList = document.getElementById('reminderList');
+            insertSortedReminder(reminderList, newReminder);
+
+            document.getElementById('reminderInput').value = "";
+            document.getElementById('datePickerInput').value = "";
+
+            const emptyMessage = document.querySelector('.task.list');
+            if (emptyMessage) {
+                emptyMessage.style.display = 'none';
+            }
+        }
+    });
+
+    function convertToDate(dateString) {
+        const parts = dateString.split('-');
+        return new Date(parts[2], parts[1] - 1, parts[0]);
+    }
+
+    function insertSortedReminder(reminderList, newReminder) {
+        const reminders = reminderList.querySelectorAll('li');
+        const newReminderDate = new Date(newReminder.getAttribute('data-date'));
+        let inserted = false;
+
+        for (let i = 0; i < reminders.length; i++) {
+            const currentReminderDate = new Date(reminders[i].getAttribute('data-date'));
+            
+            if (newReminderDate < currentReminderDate) {
+                reminderList.insertBefore(newReminder, reminders[i]);
+                inserted = true;
+                break;
+            }
+        }
+
+        if (!inserted) {
+            reminderList.appendChild(newReminder);
+        }
+    }
+</script>
+
+{% endblock events %}
