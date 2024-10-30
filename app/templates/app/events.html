@@ -2,10 +2,10 @@
 
 {% block events %}
 <div class="container">
-    <h2>Chọn Ngày và Nhắc Nhở</h2>
+    <h2>Select date and add event</h2>
 
     <div class="form-group">
-        <label for="datePickerInput">Chọn Ngày:</label>
+        <label for="datePickerInput">Date:</label>
         <input type="text" id="datePickerInput" class="form-control">
     </div>
     {% comment %} <button class="btn btn-primary" onclick="showDatepicker()">Hiện Lịch</button> {% endcomment %}
@@ -14,18 +14,18 @@
         {% csrf_token %}
         {{ form.date }}  <!-- Trường date ẩn -->
         <div class="form-group">
-            <label for="reminderInput">Nhắc Nhở:</label>
+            <label for="reminderInput">Event:</label>
             <input type="text" id="reminderInput" name="reminder" class="form-control" required>
         </div>
-        <button type="submit" class="btn btn-success">Lưu Nhắc Nhở</button>
+        <button type="submit" class="btn btn-success">Save</button>
     </form>
 
-    <h3>Nhắc Nhở Đã Lưu:</h3>
+    <h3>Saved events:</h3>
     <ul id="reminderList">
         {% for reminder in reminders %}
             <li>{{ reminder.date }}: {{ reminder.reminder }}</li>
         {% empty %}
-            <li class="task list">Không có nhắc nhở nào được lưu.</li>
+            <li class="task list">There is no saved event.</li>
         {% endfor %}
     </ul>
 </div>
