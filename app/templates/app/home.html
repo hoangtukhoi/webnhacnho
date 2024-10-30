@@ -1,6 +1,10 @@
 {% extends 'app/base.html' %}
 
+{% load static %} 
+
 {% block home %}
-    <h1>Trang web đặt lịch số 1 Việt Nam</h1>
-    <p>Liên hệ tác giả để biết thêm chi tiết</p>
+<link rel="stylesheet" href="{% static 'css/homecss.css' %}">
+<div id="calendar"></div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
+<script src="{% static 'js/homejs.js' %}"></script>
 {% endblock home %}

@@ -6,6 +6,22 @@ from .models import *
 import json
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+import calendar
+from datetime import datetime
+
+def home(request):
+    print("View home đã được gọi")  # Thêm dòng này để kiểm tra
+    now = datetime.now()
+    month = now.month
+    year = now.year
+    month_calendar = calendar.monthcalendar(year, month)
+
+    context = {
+        'month_calendar': month_calendar,
+        'month': calendar.month_name[month],
+        'year': year,
+    }
+    return render(request, 'app/home.html', context)
 # Create your views here.
 def register(request):
     form = CreateUserForm()
