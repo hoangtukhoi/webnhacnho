@@ -53,26 +53,34 @@
   
     Calendar.prototype.drawMonth = function() {
       var self = this;
-      
+  
+      // Áp dụng danh sách ngày đã có
+      // this.events.forEach(function(ev, index) {
+      //     if (ev.date) {
+      //         ev.date = self.current.clone().date(ev.date.date());
+      //     }
+      // });
       this.events.forEach(function(ev) {
-       ev.date = self.current.clone().date(Math.random() * (29 - 1) + 1);
+        if (ev.date) {
+            ev.date = moment(ev.date); // Đảm bảo định dạng là đối tượng moment
+        }
       });
-      
-      
+    
+      // Phần còn lại của `drawMonth` để hiển thị tháng
       if(this.month) {
-        this.oldMonth = this.month;
-        this.oldMonth.className = 'month out ' + (self.next ? 'next' : 'prev');
-        this.oldMonth.addEventListener('webkitAnimationEnd', function() {
-          self.oldMonth.parentNode.removeChild(self.oldMonth);
-          self.month = createElement('div', 'month');
-          self.backFill();
-          self.currentMonth();
-          self.fowardFill();
-          self.el.appendChild(self.month);
-          window.setTimeout(function() {
-            self.month.className = 'month in ' + (self.next ? 'next' : 'prev');
-          }, 16);
-        });
+          this.oldMonth = this.month;
+          this.oldMonth.className = 'month out ' + (self.next ? 'next' : 'prev');
+          this.oldMonth.addEventListener('webkitAnimationEnd', function() {
+              self.oldMonth.parentNode.removeChild(self.oldMonth);
+              self.month = createElement('div', 'month');
+              self.backFill();
+              self.currentMonth();
+              self.fowardFill();
+              self.el.appendChild(self.month);
+              window.setTimeout(function() {
+                  self.month.className = 'month in ' + (self.next ? 'next' : 'prev');
+              }, 16);
+          });
       } else {
           this.month = createElement('div', 'month');
           this.el.appendChild(this.month);
@@ -81,7 +89,7 @@
           this.fowardFill();
           this.month.className = 'month new';
       }
-    }
+  }
   
     Calendar.prototype.backFill = function() {
       var clone = this.current.clone();
@@ -149,22 +157,39 @@
       outer.appendChild(events);
       this.week.appendChild(outer);
     }
-  
+
     Calendar.prototype.drawEvents = function(day, element) {
       if(day.month() === this.current.month()) {
-        var todaysEvents = this.events.reduce(function(memo, ev) {
-          if(ev.date.isSame(day, 'day')) {
-            memo.push(ev);
-          }
-          return memo;
-        }, []);
+          var todaysEvents = this.events.reduce(function(memo, ev) {
+              // So sánh ngày tháng năm chính xác
+              if(ev.date.isSame(day, 'day')) {
+                  memo.push(ev);
+              }
+              return memo;
+          }, []);
   
-        todaysEvents.forEach(function(ev) {
-          var evSpan = createElement('span', ev.color);
-          element.appendChild(evSpan);
-        });
+          todaysEvents.forEach(function(ev) {
+              var evSpan = createElement('span', ev.color);
+              element.appendChild(evSpan);
+          });
       }
-    }
+  }
+  
+    // Calendar.prototype.drawEvents = function(day, element) {
+    //   if(day.month() === this.current.month()) {
+    //     var todaysEvents = this.events.reduce(function(memo, ev) {
+    //       if(ev.date.isSame(day, 'day')) {
+    //         memo.push(ev);
+    //       }
+    //       return memo;
+    //     }, []);
+  
+    //     todaysEvents.forEach(function(ev) {
+    //       var evSpan = createElement('span', ev.color);
+    //       element.appendChild(evSpan);
+    //     });
+    //   }
+    // }
   
     Calendar.prototype.getDayClass = function(day) {
       classes = ['day'];
@@ -321,10 +346,11 @@
   
   !function() {
     var data = [
-      
+      { eventName: 'Lunch Meeting w/ Mark', calendar: 'Work', color: 'orange', date: moment('2024-11-05') },
+      { eventName: 'Game vs Portland', calendar: 'Sports', color: 'blue', date: moment('2024-11-10') },
+      { eventName: 'School Play', calendar: 'Kids', color: 'yellow', date: moment('2024-12-15') },
+      // Các sự kiện khác với ngày tháng năm cụ thể
     ];
-  
-    
   
     function addDate(ev) {
       
