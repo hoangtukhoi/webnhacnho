@@ -3,6 +3,8 @@
 # class ReminderForm(forms.Form):
 #     date = forms.DateField(widget=forms.HiddenInput())
 #     reminder = forms.CharField(label='Nhắc nhở', max_length=200)
+
+
 from django import forms
 from .models import Reminder
 

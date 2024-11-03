@@ -8,7 +8,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 import calendar
 from datetime import datetime
-
+from .models import Reminder
+from .forms import ReminderForm
 def home(request):
     print("View home đã được gọi")  # Thêm dòng này để kiểm tra
     now = datetime.now()
@@ -50,23 +51,52 @@ def loginPage(request):
 def base(request):
     return render(request, 'app/base.html')
 def events(request):
-    return render(request, 'app/events.html')
-def home(request):
-    return render(request, 'app/home.html')
-def lich(request):
-    return render(request, 'app/lich.html')
-from .models import Reminder
-from .forms import ReminderForm
-def datepicker_example(request):
     if request.method == 'POST':
         form = ReminderForm(request.POST)
         if form.is_valid():
             date = form.cleaned_data['date']
             reminder_text = form.cleaned_data['reminder']
             Reminder.objects.create(date=date, reminder=reminder_text)  # Lưu nhắc nhở vào cơ sở dữ liệu
-            return redirect('datepicker_example')
-
+            return redirect('events')
+    
     form = ReminderForm(initial={'date': timezone.now().date()})
     reminders = Reminder.objects.all()  # Lấy tất cả nhắc nhở từ cơ sở dữ liệu
 
-    return render(request, 'app/lich.html', {'form': form, 'reminders': reminders})
+    return render(request, 'app/events.html', {'form': form, 'reminders': reminders})
+def home(request):
+    return render(request, 'app/home.html')
+from django.http import JsonResponse
+from .models import Reminder  # Giả sử bạn đã có model Reminder
+
+def save_reminder(request):
+    if request.method == 'POST':
+        reminder_text = request.POST.get('reminder')
+        reminder_date = request.POST.get('date')
+        
+        # Chuyển đổi chuỗi thành đối tượng ngày tháng, nếu cần thiết
+        # Lưu ý rằng format 'dd-mm-yyyy' cần chuyển thành đối tượng ngày Python
+        from datetime import datetime
+        reminder_date = datetime.strptime(reminder_date, '%d-%m-%Y')
+
+        # Tạo reminder mới và lưu vào DB
+        reminder = Reminder(reminder=reminder_text, date=reminder_date)
+        reminder.save()
+        
+        return JsonResponse({'message': 'Reminder saved successfully!'})
+    else:
+        return JsonResponse({'error': 'Invalid request'}, status=400)
+    # views.py
+from django.http import JsonResponse
+
+def get_reminders(request):
+    reminders = Reminder.objects.all()
+    reminders_data = [
+        {
+            'eventName': reminder.reminder,
+            'calendar': 'Default',
+            'color': 'orange',  # Default color
+            'date': reminder.date.strftime('%Y-%m-%d')  # Format date as string
+        }
+        for reminder in reminders
+    ]
+    return JsonResponse(reminders_data, safe=False)

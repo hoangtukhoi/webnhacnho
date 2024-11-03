@@ -345,17 +345,32 @@
   }();
   
   !function() {
-    var data = [
-      { eventName: 'Lunch Meeting w/ Mark', calendar: 'Work', color: 'orange', date: moment('2024-11-05') },
-      { eventName: 'Game vs Portland', calendar: 'Sports', color: 'blue', date: moment('2024-11-10') },
-      { eventName: 'School Play', calendar: 'Kids', color: 'yellow', date: moment('2024-12-15') },
-      // Các sự kiện khác với ngày tháng năm cụ thể
-    ];
-  
+    var data = [];
+
+    // Fetch reminders from the server
+    $.ajax({
+        url: '/get_reminders/',  // The URL of the Django view
+        type: 'GET',
+        success: function(response) {
+            // Populate the `data` array with reminders from the response
+            response.forEach(reminder => {
+                data.push({
+                    eventName: reminder.eventName,
+                    calendar: reminder.calendar,
+                    color: reminder.color,  // This will be 'orange' by default
+                    date: moment(reminder.date)
+                });
+            });
+
+            // Initialize the calendar with the fetched data
+            var calendar = new Calendar('#calendar', data);
+        },
+        error: function(xhr, status, error) {
+            console.error('Failed to load reminders:', error);
+        }
+    });
+
     function addDate(ev) {
-      
+        // Additional logic for date handling if needed
     }
-  
-    var calendar = new Calendar('#calendar', data);
-  
-  }();
+}();

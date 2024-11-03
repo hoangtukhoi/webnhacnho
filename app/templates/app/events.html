@@ -10,7 +10,7 @@
     </div>
     {% comment %} <button class="btn btn-primary" onclick="showDatepicker()">Hiện Lịch</button> {% endcomment %}
 
-    <form id="reminderForm">
+    <form id="reminderForm" method = "POST" action="{% url 'events' %}" >
         {% csrf_token %}
         {{ form.date }}  <!-- Trường date ẩn -->
         <div class="form-group">
@@ -74,59 +74,41 @@
             autoclose: true
         });
     });
-
+    
     function showDatepicker() {
         $('#datePickerInput').datepicker('show'); // Hiển thị lịch khi bấm nút
     }
-
+    
     document.getElementById('reminderForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Ngăn chặn form reload trang
-
+    
         const reminderValue = document.getElementById('reminderInput').value;
         const datePickerValue = document.getElementById('datePickerInput').value;
         
         if (reminderValue.trim() !== "" && datePickerValue.trim() !== "") {
-            const newReminder = document.createElement('li');
-            newReminder.textContent = datePickerValue + " - " + reminderValue;
-            newReminder.setAttribute('data-date', convertToDate(datePickerValue).toISOString());
-
-            const reminderList = document.getElementById('reminderList');
-            insertSortedReminder(reminderList, newReminder);
-
-            document.getElementById('reminderInput').value = "";
-            document.getElementById('datePickerInput').value = "";
-
-            const emptyMessage = document.querySelector('.task.list');
-            if (emptyMessage) {
-                emptyMessage.style.display = 'none';
-            }
+            // Gửi dữ liệu qua AJAX tới server
+            $.ajax({
+                url: '/save_reminder/',  // Đảm bảo rằng URL này trỏ đến view trong Django của bạn
+                type: 'POST',
+                data: {
+                    'reminder': reminderValue,
+                    'date': datePickerValue,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}' // Django yêu cầu CSRF token cho yêu cầu POST
+                },
+                success: function(response) {
+                    // Xử lý nếu lưu thành công (ví dụ: hiển thị thông báo)
+                    alert('Reminder saved successfully!');
+                    document.getElementById('reminderInput').value = "";
+                    document.getElementById('datePickerInput').value = "";
+                },
+                error: function(xhr, status, error) {
+                    // Xử lý lỗi nếu có
+                    alert('Failed to save reminder.');
+                }
+            });
         }
     });
-
-    function convertToDate(dateString) {
-        const parts = dateString.split('-');
-        return new Date(parts[2], parts[1] - 1, parts[0]);
-    }
-
-    function insertSortedReminder(reminderList, newReminder) {
-        const reminders = reminderList.querySelectorAll('li');
-        const newReminderDate = new Date(newReminder.getAttribute('data-date'));
-        let inserted = false;
-
-        for (let i = 0; i < reminders.length; i++) {
-            const currentReminderDate = new Date(reminders[i].getAttribute('data-date'));
-            
-            if (newReminderDate < currentReminderDate) {
-                reminderList.insertBefore(newReminder, reminders[i]);
-                inserted = true;
-                break;
-            }
-        }
-
-        if (!inserted) {
-            reminderList.appendChild(newReminder);
-        }
-    }
+    
 </script>
 
 {% endblock events %}
