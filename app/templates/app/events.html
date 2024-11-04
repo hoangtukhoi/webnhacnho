@@ -8,11 +8,15 @@
         <label for="datePickerInput">Date:</label>
         <input type="text" id="datePickerInput" class="form-control">
     </div>
-    {% comment %} <button class="btn btn-primary" onclick="showDatepicker()">Hiện Lịch</button> {% endcomment %}
-
-    <form id="reminderForm" method = "POST" action="{% url 'events' %}" >
+    
+    <!-- Thêm phần input cho thời gian -->
+    <div class="form-group">
+        <label for="timePickerInput">Time:</label>
+        <input type="text" id="timePickerInput" class="form-control">
+    </div>
+    
+    <form id="reminderForm" method="POST" action="{% url 'events' %}">
         {% csrf_token %}
-        {{ form.date }}  <!-- Trường date ẩn -->
         <div class="form-group">
             <label for="reminderInput">Event:</label>
             <input type="text" id="reminderInput" name="reminder" class="form-control" required>
@@ -47,14 +51,14 @@
         margin-top: 20px;
     }
 
-    #datePickerInput {
-        width: 300px;  /* Chiều rộng cho input date */
-        height: 40px;  /* Chiều cao cho input date */
+    #datePickerInput, #timePickerInput {
+        width: 300px;  /* Chiều rộng cho input date và time */
+        height: 40px;  /* Chiều cao cho input date và time */
     }
 
     input[name="reminder"] {
-        width: 500px;  /* Chiều rộng cho input reminder */
-        height: 50px;  /* Chiều cao cho input reminder */
+        width: 500px;
+        height: 50px;
     }
 
     .btn-primary {
@@ -66,49 +70,49 @@
     }
 </style>
 
-
 <script>
     $(document).ready(function() {
         $('#datePickerInput').datepicker({
             format: 'dd-mm-yyyy',
             autoclose: true
         });
+        
+        // Bạn có thể thêm code jQuery cho Time Picker nếu cần thiết
     });
-    
+
     function showDatepicker() {
-        $('#datePickerInput').datepicker('show'); // Hiển thị lịch khi bấm nút
+        $('#datePickerInput').datepicker('show');
     }
-    
+
     document.getElementById('reminderForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Ngăn chặn form reload trang
-    
+        event.preventDefault();
+
         const reminderValue = document.getElementById('reminderInput').value;
         const datePickerValue = document.getElementById('datePickerInput').value;
+        const timePickerValue = document.getElementById('timePickerInput').value;
         
-        if (reminderValue.trim() !== "" && datePickerValue.trim() !== "") {
-            // Gửi dữ liệu qua AJAX tới server
+        if (reminderValue.trim() !== "" && datePickerValue.trim() !== "" && timePickerValue.trim() !== "") {
             $.ajax({
-                url: '/save_reminder/',  // Đảm bảo rằng URL này trỏ đến view trong Django của bạn
+                url: '/save_reminder/',  
                 type: 'POST',
                 data: {
                     'reminder': reminderValue,
                     'date': datePickerValue,
-                    'csrfmiddlewaretoken': '{{ csrf_token }}' // Django yêu cầu CSRF token cho yêu cầu POST
+                    'time': timePickerValue,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
                 success: function(response) {
-                    // Xử lý nếu lưu thành công (ví dụ: hiển thị thông báo)
                     alert('Reminder saved successfully!');
                     document.getElementById('reminderInput').value = "";
                     document.getElementById('datePickerInput').value = "";
+                    document.getElementById('timePickerInput').value = "";
                 },
                 error: function(xhr, status, error) {
-                    // Xử lý lỗi nếu có
                     alert('Failed to save reminder.');
                 }
             });
         }
     });
-    
 </script>
 
 {% endblock events %}
