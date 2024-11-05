@@ -263,7 +263,7 @@
       events.forEach(function(ev) {
         var div = createElement('div', 'event');
         var square = createElement('div', 'event-category ' + ev.color);
-        var span = createElement('span', '', ev.eventName);
+        var span = createElement('span', '',ev.eventTime + " : " + ev.eventName);
   
         div.appendChild(square);
         div.appendChild(span);
@@ -355,6 +355,7 @@
             // Populate the `data` array with reminders from the response
             response.forEach(reminder => {
                 data.push({
+                    eventTime: reminder.eventTime,
                     eventName: reminder.eventName,
                     calendar: reminder.calendar,
                     color: reminder.color,  // This will be 'orange' by default

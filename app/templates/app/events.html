@@ -127,6 +127,7 @@
                 },
                 success: function(response) {
                     alert('Reminder saved successfully!');
+                    location.reload();
                     document.getElementById('reminderInput').value = "";
                     document.getElementById('datePickerInput').value = "";
                     document.getElementById('timePickerInput').value = "";

@@ -102,3 +102,12 @@ def get_reminders(request):
         for reminder in reminders
     ]
     return JsonResponse(reminders_data, safe=False)
+def delete_reminder(request, id):
+    if request.method == 'POST':
+        try:
+            reminder = Reminder.objects.get(id=id)
+            reminder.delete()
+            return JsonResponse({'status': 'success'})
+        except Reminder.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Event not found'})
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'})
