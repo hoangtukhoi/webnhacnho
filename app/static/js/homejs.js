@@ -259,7 +259,9 @@
       //Remove any events in the current details element
       var currentWrapper = ele.querySelector('.events');
       var wrapper = createElement('div', 'events in' + (currentWrapper ? ' new' : ''));
-  
+      events.sort(function(a, b) {
+        return a.eventTime.localeCompare(b.eventTime); // Sắp xếp theo thứ tự thời gian
+    });
       events.forEach(function(ev) {
         var div = createElement('div', 'event');
         var square = createElement('div', 'event-category ' + ev.color);
