@@ -11,7 +11,7 @@ from .models import Reminder
 class ReminderForm(forms.ModelForm):
     class Meta:
         model = Reminder
-        fields = ['date', 'reminder']
+        fields = ['date', 'reminder','time']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
         }

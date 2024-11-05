@@ -56,11 +56,12 @@ def events(request):
         if form.is_valid():
             date = form.cleaned_data['date']
             reminder_text = form.cleaned_data['reminder']
-            Reminder.objects.create(date=date, reminder=reminder_text)  # Lưu nhắc nhở vào cơ sở dữ liệu
+            reminder_time = form.cleaned_data['time']
+            Reminder.objects.create(date=date, reminder=reminder_text, time=reminder_time)  # Lưu nhắc nhở vào cơ sở dữ liệu
             return redirect('events')
     
     form = ReminderForm(initial={'date': timezone.now().date()})
-    reminders = Reminder.objects.all()  # Lấy tất cả nhắc nhở từ cơ sở dữ liệu
+    reminders = Reminder.objects.all().order_by("date")  # Lấy tất cả nhắc nhở từ cơ sở dữ liệu
 
     return render(request, 'app/events.html', {'form': form, 'reminders': reminders})
 def home(request):
@@ -72,14 +73,14 @@ def save_reminder(request):
     if request.method == 'POST':
         reminder_text = request.POST.get('reminder')
         reminder_date = request.POST.get('date')
-        
+        reminder_time = request.POST.get('time')
         # Chuyển đổi chuỗi thành đối tượng ngày tháng, nếu cần thiết
         # Lưu ý rằng format 'dd-mm-yyyy' cần chuyển thành đối tượng ngày Python
         from datetime import datetime
         reminder_date = datetime.strptime(reminder_date, '%d-%m-%Y')
 
         # Tạo reminder mới và lưu vào DB
-        reminder = Reminder(reminder=reminder_text, date=reminder_date)
+        reminder = Reminder(reminder=reminder_text, date=reminder_date, time=reminder_time)
         reminder.save()
         
         return JsonResponse({'message': 'Reminder saved successfully!'})
@@ -93,6 +94,7 @@ def get_reminders(request):
     reminders_data = [
         {
             'eventName': reminder.reminder,
+            'eventTime': reminder.time,
             'calendar': 'Default',
             'color': 'orange',  # Default color
             'date': reminder.date.strftime('%Y-%m-%d')  # Format date as string

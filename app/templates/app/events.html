@@ -25,13 +25,27 @@
     </form>
 
     <h3>Saved events:</h3>
+{% if reminders %}
     <ul id="reminderList">
         {% for reminder in reminders %}
-            <li>{{ reminder.date }}: {{ reminder.reminder }}</li>
-        {% empty %}
-            <li class="task list">There is no saved event.</li>
+            {% if forloop.first or reminder.date != previous_date %}
+                {% if not forloop.first %}</ul>{% endif %}
+                <li>{{ reminder.date }}
+                    <ul>
+            {% endif %}
+                    <li>{{reminder.time}} : {{ reminder.reminder }}</li>
+            {% if forloop.last %}</ul></li>{% endif %}
+            {% with reminder.date as previous_date %}
+            {% endwith %}
         {% endfor %}
     </ul>
+{% else %}
+    <ul id="reminderList">
+        <li class="task list">There is no saved event.</li>
+    </ul>
+{% endif %}
+
+
 </div>
 
 <style>
