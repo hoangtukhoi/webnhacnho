@@ -61,7 +61,7 @@ def events(request):
             return redirect('events')
     
     form = ReminderForm(initial={'date': timezone.now().date()})
-    reminders = Reminder.objects.all().order_by("date")  # Lấy tất cả nhắc nhở từ cơ sở dữ liệu
+    reminders = Reminder.objects.all().order_by("date", "time")  # Lấy tất cả nhắc nhở từ cơ sở dữ liệu
 
     return render(request, 'app/events.html', {'form': form, 'reminders': reminders})
 def home(request):
