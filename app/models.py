@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 class Reminder(models.Model):
     date = models.DateField()
     reminder = models.CharField(max_length=200)
-    time = models.CharField(default="00:00", max_length=10)
+    time = models.TimeField()
     def __str__(self):
         return f"{self.date}: {self.reminder}:{self.time}"
 

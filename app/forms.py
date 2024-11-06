@@ -14,4 +14,5 @@ class ReminderForm(forms.ModelForm):
         fields = ['date', 'reminder','time']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
+            'time': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
         }
