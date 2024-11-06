@@ -35,8 +35,8 @@ def register(request):
     return render(request,'app/register.html', context  )
 def loginPage(request):
     
-    # if request.user.is_authenticated :
-    #     return redirect('home')
+    if request.user.is_authenticated :
+        return redirect('home')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -111,3 +111,6 @@ def delete_reminder(request, id):
         except Reminder.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Event not found'})
     return JsonResponse({'status': 'error', 'message': 'Invalid request'})
+def logoutPage(request):
+    logout(request)
+    return redirect('login')
