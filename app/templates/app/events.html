@@ -95,19 +95,19 @@
 </style>
 
 <script>
+    // Hiển thị lịch
     $(document).ready(function() {
         $('#datePickerInput').datepicker({
             format: 'dd-mm-yyyy',
             autoclose: true
         });
-        
-        // Bạn có thể thêm code jQuery cho Time Picker nếu cần thiết
     });
 
     function showDatepicker() {
         $('#datePickerInput').datepicker('show');
     }
 
+    // Lưu event vào DB
     document.getElementById('reminderForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -139,7 +139,7 @@
         }
     });
 
-    // Xử lý sự kiện click vào nút "x" để xóa sự kiện
+    // Xóa sự kiện
     document.querySelectorAll('.delete-btn').forEach(function(button) {
         button.addEventListener('click', function() {
             const reminderId = this.getAttribute('data-id');
