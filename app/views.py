@@ -10,8 +10,10 @@ import calendar
 from datetime import datetime
 from .models import Reminder
 from .forms import ReminderForm
+from threading import Thread
+from .notify import check_and_notify
+
 def home(request):
-    print("View home đã được gọi")  # Thêm dòng này để kiểm tra
     now = datetime.now()
     month = now.month
     year = now.year
@@ -23,7 +25,7 @@ def home(request):
         'year': year,
     }
     return render(request, 'app/home.html', context)
-# Create your views here.
+# Tạo trang 
 def register(request):
     form = CreateUserForm()
     
@@ -74,8 +76,7 @@ def save_reminder(request):
         reminder_text = request.POST.get('reminder')
         reminder_date = request.POST.get('date')
         reminder_time = request.POST.get('time')
-        # Chuyển đổi chuỗi thành đối tượng ngày tháng, nếu cần thiết
-        # Lưu ý rằng format 'dd-mm-yyyy' cần chuyển thành đối tượng ngày Python
+        # Chuyển đổi chuỗi thành đối tượng ngày tháng
         from datetime import datetime
         reminder_date = datetime.strptime(reminder_date, '%d-%m-%Y')
 
@@ -97,7 +98,7 @@ def get_reminders(request):
             'eventTime': reminder.time,
             'calendar': 'Default',
             'color': 'orange',  # Default color
-            'date': reminder.date.strftime('%Y-%m-%d')  # Format date as string
+            'date': reminder.date.strftime('%Y-%m-%d')  
         }
         for reminder in reminders
     ]
@@ -114,3 +115,8 @@ def delete_reminder(request, id):
 def logoutPage(request):
     logout(request)
     return redirect('login')
+
+if __name__ == "__main__":
+    t = Thread(target=check_and_notify)
+    t.daemon = True  
+    t.start()
