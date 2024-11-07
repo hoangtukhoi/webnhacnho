@@ -12,6 +12,8 @@ from .models import Reminder
 from .forms import ReminderForm
 from threading import Thread
 from .notify import check_and_notify
+from django.http import JsonResponse
+from .models import Reminder  # Giả sử bạn đã có model Reminder
 
 def home(request):
     now = datetime.now()
@@ -59,17 +61,20 @@ def events(request):
             date = form.cleaned_data['date']
             reminder_text = form.cleaned_data['reminder']
             reminder_time = form.cleaned_data['time']
-            Reminder.objects.create(date=date, reminder=reminder_text, time=reminder_time)  # Lưu nhắc nhở vào cơ sở dữ liệu
+            Reminder.objects.create(
+                user=request.user,  # Gán user hiện tại vào reminder
+                date=date,
+                reminder=reminder_text,
+                time=reminder_time
+            )
             return redirect('events')
-    
-    form = ReminderForm(initial={'date': timezone.now().date()})
-    reminders = Reminder.objects.all().order_by("date", "time")  # Lấy tất cả nhắc nhở từ cơ sở dữ liệu
 
+    # Hiển thị form và tất cả các reminders
+    form = ReminderForm(initial={'date': timezone.now().date()})
+    reminders = Reminder.objects.filter(user=request.user).order_by("date", "time")
     return render(request, 'app/events.html', {'form': form, 'reminders': reminders})
 def home(request):
     return render(request, 'app/home.html')
-from django.http import JsonResponse
-from .models import Reminder  # Giả sử bạn đã có model Reminder
 
 def save_reminder(request):
     if request.method == 'POST':
@@ -81,7 +86,7 @@ def save_reminder(request):
         reminder_date = datetime.strptime(reminder_date, '%d-%m-%Y')
 
         # Tạo reminder mới và lưu vào DB
-        reminder = Reminder(reminder=reminder_text, date=reminder_date, time=reminder_time)
+        reminder = Reminder(user = request.user, reminder=reminder_text, date=reminder_date, time=reminder_time)
         reminder.save()
         
         return JsonResponse({'message': 'Reminder saved successfully!'})
@@ -91,7 +96,7 @@ def save_reminder(request):
 from django.http import JsonResponse
 
 def get_reminders(request):
-    reminders = Reminder.objects.all()
+    reminders = Reminder.objects.filter(user=request.user)
     reminders_data = [
         {
             'eventName': reminder.reminder,
