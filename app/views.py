@@ -125,3 +125,6 @@ if __name__ == "__main__":
     t = Thread(target=check_and_notify)
     t.daemon = True  
     t.start()
+    
+def weather(request):
+    return render(request, 'app/forecast.html')

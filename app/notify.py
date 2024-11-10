@@ -13,7 +13,7 @@ def check_and_notify():
             if now >= event_datetime and (now - event_datetime).total_seconds() < 60:
                 message = f"Ngài tổng tài, ngài có việc: {reminder.reminder} vào {reminder.date} lúc {reminder.time}"
                 requests.post('https://api.mynotifier.app', {
-                    'apiKey': '91c1f113-c6a5-4cc8-b3f5-a2c013503c39', # thay đổi API để hiện tb về máy
+                    'apiKey': '353b5571-d43e-4890-8234-dbd620a8395f', # thay đổi API để hiện tb về máy
                     'message': message,
                     'type': 'success'
                 })

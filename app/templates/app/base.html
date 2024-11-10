@@ -24,6 +24,7 @@
             <ul class="navbar">
                 <li class="box"><a href="{% url 'home' %}">Home</a></li>
                 <li class="box"><a href="{% url 'events' %}">Events</a></li>
+                <li class="box"><a href="{% url 'weather' %}">Weather</a></li>
                 <div class="right-menu">
                     {% if user.is_authenticated %}
                         <li /style = "color: white"><span>Hello, {{ user.username }}</span></li>
@@ -63,6 +64,9 @@
     {% block home %}
     
     {% endblock home %}
+    {% block forecast %}
+    
+    {% endblock forecast %}
     <footer style="background-color: #333; color: #fff; text-align: center; padding: 20px; font-size: 14px; width: 100%; position: relative;">
         <div style="margin-bottom: 10px;">
             © 2024 Công ty của bạn. Mọi quyền được bảo lưu.
