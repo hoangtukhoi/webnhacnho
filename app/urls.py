@@ -15,4 +15,6 @@ urlpatterns = [
     path('delete_reminder/<int:id>/', views.delete_reminder, name='delete_reminder'),
     path('logout/', views.logoutPage, name='logout'),
     path('weather/', views.weather, name = 'weather'),
+    path('delete_all_reminders/', views.delete_all_reminders, name='delete_all_reminders'),
+
 ]

@@ -21,10 +21,21 @@
             <label for="reminderInput">Event:</label>
             <input type="text" id="reminderInput" name="reminder" class="form-control" required>
         </div>
+        <div>
+            <label for="repeat">Select repeat option:</label>
+            <select id="repeat" name="repeat">
+              <option value="once" selected>Once</option> <!-- Default option -->
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              {% comment %} <option value="monthly">Monthly</option>
+              <option value="yearly">Yearly</option> {% endcomment %}
+            </select>
+        </div>
         <button type="submit" class="btn btn-success">Save</button>
     </form>
 
     <h3>Saved events:</h3>
+    <div><button id="deleteAllBtn" class="btn btn-danger">Delete All Events</button></div>
 {% if reminders %}
     <ul id="reminderList">
         {% for reminder in reminders %}
@@ -95,6 +106,24 @@
 </style>
 
 <script>
+    document.getElementById('deleteAllBtn').addEventListener('click', function() {
+        if (confirm('Are you sure you want to delete all events?')) {
+            $.ajax({
+                url: '/delete_all_reminders/',  // Đường dẫn để xóa tất cả sự kiện
+                type: 'POST',
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    alert('All events have been deleted successfully!');
+                    location.reload();  // Tải lại trang để cập nhật danh sách sự kiện
+                },
+                error: function(xhr, status, error) {
+                    alert('Failed to delete all events.');
+                }
+            });
+        }
+    });
     // Hiển thị lịch
     $(document).ready(function() {
         $('#datePickerInput').datepicker({
@@ -114,6 +143,7 @@
         const reminderValue = document.getElementById('reminderInput').value;
         const datePickerValue = document.getElementById('datePickerInput').value;
         const timePickerValue = document.getElementById('timePickerInput').value;
+        const repeatValue = document.getElementById('repeat').value;
         
         if (reminderValue.trim() !== "" && datePickerValue.trim() !== "" && timePickerValue.trim() !== "") {
             $.ajax({
@@ -123,6 +153,7 @@
                     'reminder': reminderValue,
                     'date': datePickerValue,
                     'time': timePickerValue,
+                    'repeat': repeatValue, 
                     'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
                 success: function(response) {
@@ -131,6 +162,7 @@
                     document.getElementById('reminderInput').value = "";
                     document.getElementById('datePickerInput').value = "";
                     document.getElementById('timePickerInput').value = "";
+                    document.getElementById('repeat').value = "";
                 },
                 error: function(xhr, status, error) {
                     alert('Failed to save reminder.');

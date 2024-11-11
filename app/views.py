@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.utils import timezone
 from .models import *
 import json
+from datetime import timedelta
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 import calendar
@@ -81,13 +82,39 @@ def save_reminder(request):
         reminder_text = request.POST.get('reminder')
         reminder_date = request.POST.get('date')
         reminder_time = request.POST.get('time')
+        reminder_repeat = request.POST.get('repeat')
         # Chuyển đổi chuỗi thành đối tượng ngày tháng
         from datetime import datetime
         reminder_date = datetime.strptime(reminder_date, '%d-%m-%Y')
-
+        
         # Tạo reminder mới và lưu vào DB
-        reminder = Reminder(user = request.user, reminder=reminder_text, date=reminder_date, time=reminder_time)
-        reminder.save()
+        Reminder.objects.create(
+            user = request.user,
+            reminder=reminder_text,
+            date=reminder_date,
+            time=reminder_time,
+            repeat=reminder_repeat
+        )
+        if reminder_repeat == "daily":
+            for i in range(1, 30):  # Lặp lại 3 tuần nữa (4 lần tổng cộng)
+                repeat_date = reminder_date + timedelta(days=i)
+                Reminder.objects.create(
+                    user = request.user,
+                    reminder=reminder_text,
+                    date=repeat_date,
+                    time=reminder_time,
+                    repeat=reminder_repeat
+                )
+        if reminder_repeat == "weekly":
+            for i in range(1, 12):  # Lặp lại 3 tuần nữa (4 lần tổng cộng)
+                repeat_date = reminder_date + timedelta(weeks=i)
+                Reminder.objects.create(
+                    user = request.user,
+                    reminder=reminder_text,
+                    date=repeat_date,
+                    time=reminder_time,
+                    repeat=reminder_repeat
+                )
         
         return JsonResponse({'message': 'Reminder saved successfully!'})
     else:
@@ -128,3 +155,13 @@ if __name__ == "__main__":
     
 def weather(request):
     return render(request, 'app/forecast.html')
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def delete_all_reminders(request):
+    if request.method == 'POST':
+        # Xóa tất cả các sự kiện
+        Reminder.objects.all().delete()
+        return JsonResponse({'message': 'All reminders have been deleted.'})
+    else:
+        return JsonResponse({'error': 'Invalid request'}, status=400)
