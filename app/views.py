@@ -161,7 +161,7 @@ from django.views.decorators.csrf import csrf_exempt
 def delete_all_reminders(request):
     if request.method == 'POST':
         # Xóa tất cả các sự kiện
-        Reminder.objects.all().delete()
+        Reminder.objects.filter(user=request.user).delete()
         return JsonResponse({'message': 'All reminders have been deleted.'})
     else:
         return JsonResponse({'error': 'Invalid request'}, status=400)
