@@ -1,5 +1,5 @@
 {% extends 'app/base.html' %}
-
+{%load static%}
 {% block events %}
 <div class="container">
     <h2>Select date and add event</h2>
@@ -34,8 +34,11 @@
         <button type="submit" class="btn btn-success">Save</button>
     </form>
 
-    <h3>Saved events:</h3>
-    <div><button id="deleteAllBtn" class="btn btn-danger">Delete All Events</button></div>
+    <div style="display: flex; align-items: center;">
+        <h3 style="margin-right: 10px;">Saved events:</h3>
+        <img id="deleteAllBtn" class="btn btn-danger" src="{% static 'images/deleteall.png' %}" alt="Delete All Events" style="width:50px; height:40px;background-color: transparent;" />
+    </div>
+    
 {% if reminders %}
     <ul id="reminderList">
         {% for reminder in reminders %}
