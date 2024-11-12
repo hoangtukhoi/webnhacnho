@@ -4,7 +4,153 @@
 
 {% block home %}
 <link rel="stylesheet" href="{% static 'css/homecss.css' %}">
-<div id="calendar"></div>
+
+<style>
+/* Đặt màu chữ thành màu đen cho các phần tử liên quan đến thời tiết */
+#city-name, #temp, #humidity-div, #forecast-temp, #forecast-humidity {
+  color: black;
+}
+
+/* Thêm một số CSS để cải thiện bố cục và kiểu dáng */
+.container {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.left-column, .right-column {
+  flex: 1;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.left-column {
+  margin-right: 20px; /* Tạo khoảng cách giữa các cột */
+}
+
+.left-column .header {
+  margin-bottom: 0; /* Xóa margin-bottom của phần header trong phần lịch */
+}
+
+.right-column {
+  background-color: #d3d3d3; /* Đặt màu nền của phần thời tiết thành màu xám */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.forecast-content {
+  width: 100%; /* Chiếm toàn bộ chiều rộng của cột bên phải */
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.forecast-content .header {
+  display: flex;
+  justify-content: center; /* Căn giữa nội dung trong header */
+  align-items: center;
+  margin-bottom: 20px;
+  width: 455px; /* Đặt chiều rộng của header */
+  border-radius: 8px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+}
+
+.search input {
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.search a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background-color: #007bff; 
+  color: white; /* Đặt màu chữ cho nút tìm kiếm */
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.search a:hover {
+  background-color: #0056b3; 
+}
+
+h2 {
+  color: black;
+}
+.city-icon-holder {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.city-icon-holder img {
+  margin-left: 10px;
+}
+
+.temperature, .humidity {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+</style>
+
+<div class="container">
+  <div class="left-column">
+    <div id="calendar"></div>
+  </div>
+  <div class="right-column">
+    <div class="forecast-content">
+      <header class="header">
+        <div class="search">
+          <input type="text" placeholder="Enter City Name" id="search-txt">
+          <a id="search-btn" href="#"><i class="fas fa-search"></i></a>
+        </div>
+      </header>
+      <main id="main">
+        <div class="city-icon">
+          <div class="city-icon-holder">
+            <div id="city-name"></div>
+            <img src="" alt="" id="icon">
+          </div>
+        </div>
+        <div class="temperature">
+          <div id="temp"></div>
+        </div>
+        <div class="humidity">
+          <div id="humidity-div"></div>
+        </div>
+        <div class="forecast">
+          <h2 color='black'>Forecast for Tomorrow</h2>
+          <div class="city-icon-holder">
+            <img src="" alt="" id="forecast-icon">
+          </div>
+          <div class="temperature">
+            <div id="forecast-temp"></div>
+          </div>
+          <div class="humidity">
+            <div id="forecast-humidity"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<!-- Các tệp JavaScript -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
 <script src="{% static 'js/homejs.js' %}"></script>
+<script src='https://use.fontawesome.com/releases/v5.0.13/js/all.js'></script>
+<script src="{% static 'js/weather.js' %}"></script>
 {% endblock home %}

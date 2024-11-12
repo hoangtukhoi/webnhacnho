@@ -35,10 +35,14 @@
       text-align: center;
       position:relative;
       z-index: 100;
+      display: flex;
+      justify-content: center; /* Căn giữa nội dung trong header */
+      align-items: center;
+      margin-bottom: 20px;
     }
     
     .header h1 {
-      margin: 0;
+      margin: 0; /* Đảm bảo không có margin xung quanh h1 */
       padding: 0;
       font-size: 20px;
       line-height: 50px;
@@ -381,4 +385,89 @@
     }
     @keyframes fadeOutShink  {
       to { opacity: 0; padding: 0px; height: 0px; }
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: auto;
+    }
+    
+    .container {
+      display: flex;
+      flex-direction: row; /* Đảm bảo các cột nằm ngang */
+      height: 100%;
+    }
+    
+    .left-column, .right-column {
+      flex: 1;
+      /* padding: 10px; */
+      overflow: auto; 
+      height: 690px;
+    }
+
+    .left-column {
+      margin-right: 20px; /* Tạo khoảng cách giữa các cột */
+    }
+
+    .left-column .header {
+      margin-bottom: 0; /* Xóa margin-bottom của phần header trong phần lịch */
+    }
+
+    .right-column {
+      background-color: #d3d3d3; /* Đặt màu nền của phần thời tiết thành màu xám */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .forecast-content {
+      width: 100%; /* Chiếm toàn bộ chiều rộng của cột bên phải */
+      padding: 20px;
+      box-sizing: border-box;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .forecast-content .header {
+      display: flex;
+      justify-content: center; /* Căn giữa nội dung trong header */
+      align-items: center;
+      margin-bottom: 20px;
+      width: 0px; /* Đặt chiều cao của header thành 400px */
+      border-radius: 8px;
+    }
+
+    .search {
+      display: flex;
+      align-items: center;
+    }
+    
+    .search input {
+      padding: 10px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      margin-right: 10px;
+    }
+    
+    .search a {
+      color: #fff;
+      text-decoration: none;
+    }
+    
+    .city-icon-holder {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .city-icon-holder img {
+      margin-left: 10px;
+    }
+    
+    .temperature, .humidity {
+      font-size: 1.2em;
+      margin-bottom: 10px;
     }
