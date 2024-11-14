@@ -153,8 +153,7 @@ if __name__ == "__main__":
     t.daemon = True  
     t.start()
     
-def weather(request):
-    return render(request, 'app/forecast.html')
+
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
