@@ -164,3 +164,6 @@ def delete_all_reminders(request):
         return JsonResponse({'message': 'All reminders have been deleted.'})
     else:
         return JsonResponse({'error': 'Invalid request'}, status=400)
+    
+def important(request):
+    return render(request, 'app/important.html')

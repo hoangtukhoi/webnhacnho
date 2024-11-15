@@ -24,6 +24,7 @@
             <ul class="navbar">
                 <li class="box"><a href="{% url 'home' %}">Home</a></li>
                 <li class="box"><a href="{% url 'events' %}">Events</a></li>
+                <li class="box"><a href="{% url 'important' %}">Important</a></li>
                 <div class="right-menu">
                     {% if user.is_authenticated %}
                         <li /style = "color: white"><span>Hello, {{ user.username }}</span></li>
