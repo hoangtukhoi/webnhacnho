@@ -166,7 +166,7 @@ def delete_all_reminders(request):
         return JsonResponse({'error': 'Invalid request'}, status=400)
     
 def important(request):
-    important_reminders = Reminder.objects.filter(important=True)
+    important_reminders = Reminder.objects.filter(important=True, user=request.user)
     return render(request, 'app/important.html', {'important_reminders': important_reminders})
 
 def mark_important(request, reminder_id):
@@ -175,5 +175,13 @@ def mark_important(request, reminder_id):
         reminder.important = True
         reminder.save()
         return JsonResponse({'message': 'Reminder marked as important successfully!'})
+    except Reminder.DoesNotExist:
+        return JsonResponse({'error': 'Reminder not found'}, status=404)
+def unmark_important(request, reminder_id):
+    try:
+        reminder = Reminder.objects.get(id=reminder_id)
+        reminder.important = False
+        reminder.save()
+        return JsonResponse({'message': 'Reminder unmarked as important successfully!'})
     except Reminder.DoesNotExist:
         return JsonResponse({'error': 'Reminder not found'}, status=404)

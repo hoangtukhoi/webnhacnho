@@ -1,6 +1,6 @@
 {%  extends "app/base.html" %}
 {% load static %}
-{% block content %}
+{% block important %}
 <div class="container">
     <h2>Important Events</h2>
     <ul>
@@ -15,7 +15,7 @@
 
 <script>
     function countdown(date, time, elementId) {
-        var eventDate = new Date(date + 'T' + time);
+        var eventDate = new Date(date + 'T' + time +'Z');
         var countdownElement = document.getElementById(elementId);
 
         function updateCountdown() {
@@ -43,4 +43,4 @@
     countdown("{{ reminder.date }}", "{{ reminder.time }}", "countdown-{{ reminder.id }}");
     {% endfor %}
 </script>
-{% endblock content %}
+{% endblock important %}

@@ -202,21 +202,33 @@
     document.querySelectorAll('.important-btn').forEach(function(button) {
         button.addEventListener('click', function() {
             const reminderId = this.getAttribute('data-id');
+            const action = this.getAttribute('data-action'); // 'mark' hoặc 'unmark'
+            const url = action === 'mark' ? '/mark_important/' : '/unmark_important/';
+            
             $.ajax({
-                url: '/mark_important/' + reminderId + '/',
+                url: url + reminderId + '/',
                 type: 'POST',
                 data: {
                     'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
                 success: function(response) {
-                    alert('Event marked as important successfully!');
+                    alert(`Event ${action === 'mark' ? 'marked as important' : 'unmarked as important'} successfully!`);
+                    // Cập nhật nút hành động sau khi thay đổi trạng thái
+                    if (action === 'mark') {
+                        button.setAttribute('data-action', 'unmark');
+                        button.textContent = 'Unmark as Important';
+                    } else {
+                        button.setAttribute('data-action', 'mark');
+                        button.textContent = 'Mark as Important';
+                    }
                 },
                 error: function(xhr, status, error) {
-                    alert('Failed to mark event as important.');
+                    alert(`Failed to ${action} event as important.`);
                 }
             });
         });
     });
+    
 </script>
 
 {% endblock events %}
