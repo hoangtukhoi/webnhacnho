@@ -1,3 +1,46 @@
 {%  extends "app/base.html" %}
 {% load static %}
+{% block content %}
+<div class="container">
+    <h2>Important Events</h2>
+    <ul>
+        {% for reminder in important_reminders %}
+        <li>
+            <strong>{{ reminder.reminder }}</strong> - {{ reminder.date }} {{ reminder.time }}
+            <div id="countdown-{{ reminder.id }}"></div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 
+<script>
+    function countdown(date, time, elementId) {
+        var eventDate = new Date(date + 'T' + time);
+        var countdownElement = document.getElementById(elementId);
+
+        function updateCountdown() {
+            var now = new Date();
+            var distance = eventDate - now;
+
+            if (distance < 0) {
+                countdownElement.innerHTML = "Event has passed";
+                return;
+            }
+
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    }
+
+    {% for reminder in important_reminders %}
+    countdown("{{ reminder.date }}", "{{ reminder.time }}", "countdown-{{ reminder.id }}");
+    {% endfor %}
+</script>
+{% endblock content %}

@@ -15,6 +15,8 @@ from threading import Thread
 from .notify import check_and_notify
 from django.http import JsonResponse
 from .models import Reminder  # Giả sử bạn đã có model Reminder
+from .forms import ReminderForm
+from django.views.decorators.csrf import csrf_exempt
 
 def home(request):
     now = datetime.now()
@@ -154,8 +156,6 @@ if __name__ == "__main__":
     t.start()
     
 
-from django.views.decorators.csrf import csrf_exempt
-
 @csrf_exempt
 def delete_all_reminders(request):
     if request.method == 'POST':
@@ -166,4 +166,14 @@ def delete_all_reminders(request):
         return JsonResponse({'error': 'Invalid request'}, status=400)
     
 def important(request):
-    return render(request, 'app/important.html')
+    important_reminders = Reminder.objects.filter(important=True)
+    return render(request, 'app/important.html', {'important_reminders': important_reminders})
+
+def mark_important(request, reminder_id):
+    try:
+        reminder = Reminder.objects.get(id=reminder_id)
+        reminder.important = True
+        reminder.save()
+        return JsonResponse({'message': 'Reminder marked as important successfully!'})
+    except Reminder.DoesNotExist:
+        return JsonResponse({'error': 'Reminder not found'}, status=404)

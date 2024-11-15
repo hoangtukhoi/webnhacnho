@@ -49,6 +49,7 @@
             {% endif %}
                     <li>{{ reminder.time }} : {{ reminder.reminder }}
                         <button class="delete-btn" data-id="{{ reminder.id }}">x</button>
+                        <button class="important-btn" data-id="{{ reminder.id }}">Mark as Important</button>
                     </li>
             {% if forloop.last %}</ul></li>{% endif %}
             {% with reminder.date as previous_date %}
@@ -194,6 +195,26 @@
                     }
                 });
             }
+        });
+    });
+
+    // Đánh dấu sự kiện quan trọng
+    document.querySelectorAll('.important-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            const reminderId = this.getAttribute('data-id');
+            $.ajax({
+                url: '/mark_important/' + reminderId + '/',
+                type: 'POST',
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    alert('Event marked as important successfully!');
+                },
+                error: function(xhr, status, error) {
+                    alert('Failed to mark event as important.');
+                }
+            });
         });
     });
 </script>

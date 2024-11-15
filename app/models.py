@@ -11,6 +11,7 @@ class Reminder(models.Model):
     date = models.DateField()
     reminder = models.CharField(max_length=200)
     time = models.TimeField()
+    important = models.BooleanField(default=False) 
     repeat = models.CharField(
         max_length=20,
         choices=[('once', 'Once'), ('daily', 'Daily'), ('weekly', 'Weekly'),
