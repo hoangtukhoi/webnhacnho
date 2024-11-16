@@ -25,6 +25,7 @@
                 <li class="box"><a href="{% url 'home' %}">Home</a></li>
                 <li class="box"><a href="{% url 'events' %}">Events</a></li>
                 <li class="box"><a href="{% url 'important' %}">Important</a></li>
+                <li class="box"><a href="{% url 'diary' %}">Diary</a></li>
                 <div class="right-menu">
                     {% if user.is_authenticated %}
                         <li /style = "color: white"><span>Hello, {{ user.username }}</span></li>
@@ -66,7 +67,9 @@
     {% endblock home %}
     {% block important %}
     {% endblock important %}
-    
+    {% block diary %}
+
+    {% endblock diary %}
     <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

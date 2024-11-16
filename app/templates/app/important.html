@@ -1,77 +1,78 @@
 {% extends "app/base.html" %}
 {% load static %}
 {% block important %}
+<link rel="stylesheet" href="{% static 'css/important.css' %}">
 <div class="countdown-container">
-    <h1>coming soon!</h1>
-  
-    <div class="countdown">
-      <!-- day -->
-      <div class="day-container">
-        <h2 class="day">1/</h2>
+    <h1>Coming soon!</h1>
+
+    {% for reminder in important_reminders %}
+<div class="countdown" data-date="{{ reminder.date|date:'Y-m-d' }}" data-time="{{ reminder.time|time:'H:i:s' }}">
+    
+    
+    <h2>{{ reminder.reminder }}</h2>
+    <div class="day-container">
+        <h2 class="day">0</h2>
         <p>Days</p>
-      </div>
-  
-      <!-- hours -->
-      <div class="hour-container">
-        <h2 class="hour">20</h2>
-        <p>Hours</p>
-      </div>
-  
-      <!-- minutes -->
-      <div class="minute-container">
-        <h2 class="minute">10</h2>
-        <p>Minutes</p>
-      </div>
-  
-      <!-- seconds -->
-      <div class="second-container">
-        <h2 class="second">15</h2>
-        <p>Seconds</p>
-      </div>
     </div>
-  </div>
+    <div class="hour-container">
+        <h2 class="hour">0</h2>
+        <p>Hours</p>
+    </div>
+    <div class="minute-container">
+        <h2 class="minute">0</h2>
+        <p>Minutes</p>
+    </div>
+    <div class="second-container">
+        <h2 class="second">0</h2>
+        <p>Seconds</p>
+    </div>
+</div>
+{% endfor %}
+
+</div>
 
 <script>
-const countDown = () => {
-  // Set the release date for the Aquaman movie
-  const releaseDate = new Date('December 20, 2024 00:00:00').getTime();
+document.addEventListener('DOMContentLoaded', function () {
+    const countdowns = document.querySelectorAll('.countdown');
 
-  // Get the current date and time
-  const presentDate = new Date().getTime();
+    countdowns.forEach(function (countdown) {
+        const releaseDate = new Date(`${countdown.dataset.date}T${countdown.dataset.time}`).getTime();
 
-  // Calculate the remaining time until the release
-  const gap = releaseDate - presentDate;
+        const updateCountdown = () => {
+            const presentDate = new Date().getTime();
+            const gap = releaseDate - presentDate;
 
-  // Define constants for time units in milliseconds
-  const second = 1000;
-  const minute = 60 * second;
-  const hour = 60 * minute;
-  const day = 24 * hour;
+            if (gap < 0) {
+                // Nếu thời gian đã qua, hiển thị hết hạn
+                countdown.querySelector('.day').textContent = "0";
+                countdown.querySelector('.hour').textContent = "00";
+                countdown.querySelector('.minute').textContent = "00";
+                countdown.querySelector('.second').textContent = "00";
+                return;
+            }
 
-  // Calculate the remaining days, hours, minutes, and seconds
-  const dayText = Math.floor(gap / day);
-  let hourText = Math.floor((gap % day) / hour);
-  const minuteText = Math.floor((gap % hour) / minute);
-  const secondText = Math.floor((gap % minute) / second);
+            const second = 1000;
+            const minute = 60 * second;
+            const hour = 60 * minute;
+            const day = 24 * hour;
 
-  // Add leading zero to hours if less than 10
-  if (hourText < 10) {
-    hourText = '0' + hourText;
-  }
+            const dayText = Math.floor(gap / day);
+            const hourText = Math.floor((gap % day) / hour).toString().padStart(2, '0');
+            const minuteText = Math.floor((gap % hour) / minute).toString().padStart(2, '0');
+            const secondText = Math.floor((gap % minute) / second).toString().padStart(2, '0');
 
-  // Update the HTML elements with the countdown values
-  document.querySelector('.day').textContent = dayText;
-  document.querySelector('.hour').textContent = hourText;
-  document.querySelector('.minute').textContent = minuteText;
-  document.querySelector('.second').textContent = secondText;
-};
+            countdown.querySelector('.day').textContent = dayText;
+            countdown.querySelector('.hour').textContent = hourText;
+            countdown.querySelector('.minute').textContent = minuteText;
+            countdown.querySelector('.second').textContent = secondText;
+        };
 
-// Call the countdown function initially to display the countdown values
-countDown();
+        // Cập nhật ngay lần đầu
+        updateCountdown();
 
-// Set up a recurring timer to update the countdown every second
-setInterval(countDown, 1000);
+        // Cập nhật mỗi giây
+        setInterval(updateCountdown, 1000);
+    });
+});
 </script>
 {% endblock important %}
-
-<link rel="stylesheet" href="{% static 'css/important.css' %}">

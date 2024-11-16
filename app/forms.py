@@ -7,6 +7,7 @@
 
 from django import forms
 from .models import Reminder
+from .models import Diary
 
 class ReminderForm(forms.ModelForm):
     class Meta:
@@ -15,4 +16,14 @@ class ReminderForm(forms.ModelForm):
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
             'time': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
+        }
+class DiaryForm(forms.ModelForm):
+    class Meta:
+        model = Diary
+        fields = ['diary']  # Chỉ hiển thị ô để viết nhật ký
+        widgets = {
+            'diary': forms.Textarea(attrs={'rows': 5, 'placeholder': 'Write your diary here...'}),
+        }
+        labels = {
+            'diary': 'Your Diary',
         }

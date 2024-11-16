@@ -1,0 +1,31 @@
+{% extends 'app/base.html' %}
+{%load static%}
+{% block diary %}
+<link rel="stylesheet" href="{% static 'css/diary.css' %}">
+<h1>My Diary</h1>
+
+<!-- Form viết nhật ký -->
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
+
+<!-- Hiển thị danh sách nhật ký -->
+<div class="diary-list">
+    <h2>Diary Entries</h2>
+    {% if user_diaries %}
+        <ul>
+        {% for diary in user_diaries %}
+            <li>
+                <strong>{{ diary.date }}</strong>: {{ diary.diary }}
+                <!-- Nút chỉnh sửa -->
+                <a href="{% url 'edit_diary' diary.id %}" class="edit-btn">Edit</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No diary entries yet. Start writing!</p>
+    {% endif %}
+</div>
+{% endblock diary %}

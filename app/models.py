@@ -5,7 +5,14 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.db import models
 from django.contrib.auth.models import User
-
+class Diary(models.Model):
+    date = models.DateField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    diary = models.TextField()
+    def __str__(self):
+        return f"{self.date}: {self.diary}"
+    
+    
 class Reminder(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date = models.DateField()

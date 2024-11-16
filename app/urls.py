@@ -18,4 +18,6 @@ urlpatterns = [
     path('important/', views.important, name = 'important'),
     path('mark_important/<int:reminder_id>/', views.mark_important, name='mark_important'),
     path('unmark_important/<int:reminder_id>/', views.unmark_important, name='unmark_important'),
+    path('diary/', views.diary, name='diary'),
+    path('diary/edit/<int:diary_id>/', views.edit_diary, name='edit_diary'),
 ]

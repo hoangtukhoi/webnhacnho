@@ -185,3 +185,37 @@ def unmark_important(request, reminder_id):
         return JsonResponse({'message': 'Reminder unmarked as important successfully!'})
     except Reminder.DoesNotExist:
         return JsonResponse({'error': 'Reminder not found'}, status=404)
+from django.utils.timezone import now
+from .models import Diary
+from .forms import DiaryForm
+
+def diary(request):
+    # Lấy danh sách nhật ký của user hiện tại
+    user_diaries = Diary.objects.filter(user=request.user).order_by('-date')
+
+    if request.method == 'POST':
+        form = DiaryForm(request.POST)
+        if form.is_valid():
+            diary_entry = form.save(commit=False)
+            diary_entry.user = request.user
+            diary_entry.date = now().date()  # Ghi lại ngày hôm nay
+            diary_entry.save()
+            return redirect('diary')  # Trở lại trang nhật ký
+    else:
+        form = DiaryForm()
+
+    return render(request, 'app/diary.html', {'form': form, 'user_diaries': user_diaries})
+from django.shortcuts import get_object_or_404
+
+def edit_diary(request, diary_id):
+    diary_entry = get_object_or_404(Diary, id=diary_id, user=request.user)
+
+    if request.method == 'POST':
+        form = DiaryForm(request.POST, instance=diary_entry)
+        if form.is_valid():
+            form.save()
+            return redirect('diary')  # Trở lại trang nhật ký
+    else:
+        form = DiaryForm(instance=diary_entry)
+
+    return render(request, 'app/edit_diary.html', {'form': form, 'diary_entry': diary_entry})
