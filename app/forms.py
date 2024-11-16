@@ -22,7 +22,7 @@ class DiaryForm(forms.ModelForm):
         model = Diary
         fields = ['diary']  # Chỉ hiển thị ô để viết nhật ký
         widgets = {
-            'diary': forms.Textarea(attrs={'rows': 5, 'placeholder': 'Write your diary here...'}),
+            'diary': forms.Textarea(attrs={'rows': 5, 'placeholder': 'Write your diary here...(Can not delete because it is your memories ^^)'}),
         }
         labels = {
             'diary': 'Your Diary',

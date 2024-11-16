@@ -1,0 +1,81 @@
+/* Style cho form chỉnh sửa nhật ký */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 600px; /* Giới hạn chiều rộng của form */
+    margin: 0 auto; /* Căn giữa form */
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+form input,
+form textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box; /* Đảm bảo các phần tử có đủ kích thước */
+}
+
+form textarea {
+    min-height: 150px;
+    resize: vertical; /* Cho phép kéo dài chiều cao */
+}
+
+form button {
+    background-color: #4CAF50; /* Màu nền của nút */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #45a049; /* Màu nền khi hover */
+}
+
+a {
+    color: #007BFF;
+    text-decoration: none;
+    font-size: 16px;
+    margin-top: 15px;
+    display: inline-block;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Style cho container */
+h1 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+}
+
+h2 {
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+/* Bố cục tổng thể */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    flex-direction: column;
+}
+
+.container a {
+    margin-top: 10px;
+    text-align: center;
+}

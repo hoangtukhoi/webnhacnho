@@ -1,12 +1,85 @@
-.edit-btn {
-    margin-left: 10px;
-    padding: 3px 8px;
-    background-color: #28a745;
-    color: white;
-    text-decoration: none;
-    border-radius: 3px;
+/* Đặt container chia làm 2 phần: trái và phải */
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
 }
 
-.edit-btn:hover {
-    background-color: #218838;
+/* Phần nhập nhật ký (trái) */
+.left-section {
+    width: 48%; /* Chiếm 48% chiều rộng màn hình */
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.left-section h1 {
+    text-align: center;
+}
+
+.left-section form {
+    display: flex;
+    flex-direction: column;
+}
+
+.left-section form button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.left-section form button:hover {
+    background-color: #0056b3;
+}
+
+/* Phần nhật ký đã lưu (phải) */
+.right-section {
+    width: 48%; /* Chiếm 48% chiều rộng màn hình */
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.right-section h2 {
+    text-align: center;
+}
+
+/* Các khung nhật ký */
+.diary-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.diary-item {
+    background-color: #f1f1f1;
+    padding: 15px;
+    border-radius: 10px; /* Bo góc tròn */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-height: 50px;
+    word-wrap: break-word; /* Đảm bảo văn bản không tràn ra ngoài */
+    transition: background-color 0.3s ease;
+}
+
+.diary-item:hover {
+    background-color: #e0e0e0; /* Chỉnh màu khi hover */
+}
+
+/* Căn chỉnh nút và các phần tử trong form */
+button {
+    width: 100%;
+    max-width: 200px;
+    margin: 10px auto;
+}
+
+/* Điều chỉnh khung cho cả hai phần */
+.left-section, .right-section {
+    flex: 1;
 }
