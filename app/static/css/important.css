@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #030200;
+  color: #fff;
+  height: 100vh;
+  width: 100%;
+  background-image: url('https://res.cloudinary.com/dj9m3f8ux/image/upload/v1688534741/Aquaman-6_heeq9b.jpg');
+  background-size: cover;
+  background-position: right;
+  background-repeat: no-repeat;
+}
+
+.countdown-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100%;
+  color: white;
+}
+
+h1 {
+  background: linear-gradient(to right, #ffd900, #ff2f00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 700;
+  font-size: 3rem;
+  letter-spacing: 0.5rem;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 4rem;
+  margin-left: 2rem;
+}
+
+.countdown h2 {
+  font-size: 2rem;
+  background: linear-gradient(to right, #ffd900, #ff2f00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (min-width: 768px) {
+  .countdown-container {
+    margin-left: 4rem;
+  }
+}

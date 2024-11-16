@@ -1,46 +1,77 @@
-{%  extends "app/base.html" %}
+{% extends "app/base.html" %}
 {% load static %}
 {% block important %}
-<div class="container">
-    <h2>Important Events</h2>
-    <ul>
-        {% for reminder in important_reminders %}
-        <li>
-            <strong>{{ reminder.reminder }}</strong> - {{ reminder.date }} {{ reminder.time }}
-            <div id="countdown-{{ reminder.id }}"></div>
-        </li>
-        {% endfor %}
-    </ul>
-</div>
+<div class="countdown-container">
+    <h1>coming soon!</h1>
+  
+    <div class="countdown">
+      <!-- day -->
+      <div class="day-container">
+        <h2 class="day">1/</h2>
+        <p>Days</p>
+      </div>
+  
+      <!-- hours -->
+      <div class="hour-container">
+        <h2 class="hour">20</h2>
+        <p>Hours</p>
+      </div>
+  
+      <!-- minutes -->
+      <div class="minute-container">
+        <h2 class="minute">10</h2>
+        <p>Minutes</p>
+      </div>
+  
+      <!-- seconds -->
+      <div class="second-container">
+        <h2 class="second">15</h2>
+        <p>Seconds</p>
+      </div>
+    </div>
+  </div>
 
 <script>
-    function countdown(date, time, elementId) {
-        var eventDate = new Date(date + 'T' + time +'Z');
-        var countdownElement = document.getElementById(elementId);
+const countDown = () => {
+  // Set the release date for the Aquaman movie
+  const releaseDate = new Date('December 20, 2024 00:00:00').getTime();
 
-        function updateCountdown() {
-            var now = new Date();
-            var distance = eventDate - now;
+  // Get the current date and time
+  const presentDate = new Date().getTime();
 
-            if (distance < 0) {
-                countdownElement.innerHTML = "Event has passed";
-                return;
-            }
+  // Calculate the remaining time until the release
+  const gap = releaseDate - presentDate;
 
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  // Define constants for time units in milliseconds
+  const second = 1000;
+  const minute = 60 * second;
+  const hour = 60 * minute;
+  const day = 24 * hour;
 
-            countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-        }
+  // Calculate the remaining days, hours, minutes, and seconds
+  const dayText = Math.floor(gap / day);
+  let hourText = Math.floor((gap % day) / hour);
+  const minuteText = Math.floor((gap % hour) / minute);
+  const secondText = Math.floor((gap % minute) / second);
 
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-    }
+  // Add leading zero to hours if less than 10
+  if (hourText < 10) {
+    hourText = '0' + hourText;
+  }
 
-    {% for reminder in important_reminders %}
-    countdown("{{ reminder.date }}", "{{ reminder.time }}", "countdown-{{ reminder.id }}");
-    {% endfor %}
+  // Update the HTML elements with the countdown values
+  document.querySelector('.day').textContent = dayText;
+  document.querySelector('.hour').textContent = hourText;
+  document.querySelector('.minute').textContent = minuteText;
+  document.querySelector('.second').textContent = secondText;
+};
+
+// Call the countdown function initially to display the countdown values
+countDown();
+
+// Set up a recurring timer to update the countdown every second
+setInterval(countDown, 1000);
 </script>
 {% endblock important %}
+
+<link rel="stylesheet" href="{% static 'css/important.css' %}">
