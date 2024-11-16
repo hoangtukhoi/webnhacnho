@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 class Diary(models.Model):
     date = models.DateField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -15,7 +16,7 @@ class Diary(models.Model):
     
 class Reminder(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    date = models.DateField()
+    date = models.DateField(default=timezone.now)
     reminder = models.CharField(max_length=200)
     time = models.TimeField()
     important = models.BooleanField(default=False) 

@@ -83,3 +83,24 @@ button {
 .left-section, .right-section {
     flex: 1;
 }
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 600px; /* Giới hạn chiều rộng của form */
+    margin: 0 auto; /* Căn giữa form */
+    padding: 20px;
+    border-radius: 50px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+form textarea, form input {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 15px; /* Bo góc tròn cho ô nhập */
+    font-size: 16px;
+    width: 100%;
+    min-height: 150px; /* Chiều cao tối thiểu cho textarea */
+    box-sizing: border-box; /* Đảm bảo chiều rộng và chiều cao không bị tràn */
+    resize: vertical; /* Cho phép kéo chiều cao */
+}
