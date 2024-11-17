@@ -3,7 +3,7 @@
 {% block important %}
 <link rel="stylesheet" href="{% static 'css/important.css' %}">
 <div class="countdown-container">
-    <h1>Coming soon!</h1>
+    <div class="incoming">Do not miss these!</div>
 
     {% for reminder in important_reminders %}
 <div class="countdown" data-date="{{ reminder.date|date:'Y-m-d' }}" data-time="{{ reminder.time|time:'H:i:s' }}">

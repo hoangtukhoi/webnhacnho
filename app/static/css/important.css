@@ -27,8 +27,8 @@ body {
   color: white;
 }
 
-h1 {
-  background: linear-gradient(to right, #ffd900, #ff2f00);
+.incoming {
+  background: linear-gradient(to right, #0091ff, #00ff62);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-transform: uppercase;
@@ -38,7 +38,7 @@ h1 {
   letter-spacing: 0.5rem;
   margin-bottom: 1rem;
   margin-left: 1rem;
-}
+} 
 
 .countdown {
   display: flex;
@@ -51,7 +51,7 @@ h1 {
 
 .countdown h2 {
   font-size: 2rem;
-  background: linear-gradient(to right, #ffd900, #ff2f00);
+  background: linear-gradient(to right, #0091ff, #00ff62);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
