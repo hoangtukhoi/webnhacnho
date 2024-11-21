@@ -44,7 +44,6 @@ form button:hover {
 a {
     color: #007BFF;
     text-decoration: none;
-    font-size: 16px;
     margin-top: 15px;
     display: inline-block;
 }
@@ -57,7 +56,6 @@ a:hover {
 h1 {
     text-align: center;
     color: #333;
-    font-size: 24px;
 }
 
 h2 {
